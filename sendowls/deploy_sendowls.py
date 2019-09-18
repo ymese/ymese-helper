@@ -34,7 +34,7 @@ def create_product_file( **options ):
     print '%s-%s' % (current_version, type)
 
     replace(plugin_config, current_app_id, new_app_id)
-    plugin_name = "%s_%s_%s(%s)" % (path.basename(dir_name), current_version, sites, type)
+    plugin_name = "%s_%s_%s_%s" % (path.basename(dir_name), current_version, sites, type)
     shutil.make_archive('%s/%s/%s' % (type, sites, plugin_name), 'zip', dir_name)
 
 def load_json_by_url( url ):
