@@ -1,6 +1,6 @@
 from tempfile import mkstemp
 from shutil import move
-from os import fdopen, remove, path
+from os import fdopen, remove, path, stat, mkdir
 import shutil, urllib, json, re
 
 def replace(file_path, pattern, subst):
@@ -35,7 +35,7 @@ def create_product_file( **options ):
 
     replace(plugin_config, current_app_id, new_app_id)
     plugin_name = "%s_%s_%s(%s)" % (path.basename(dir_name), current_version, sites, type)
-    shutil.make_archive(plugin_name, 'zip', dir_name)
+    shutil.make_archive('%s/%s/%s' % (type, sites, plugin_name), 'zip', dir_name)
 
 def load_json_by_url( url ):
     response = urllib.urlopen(url)
