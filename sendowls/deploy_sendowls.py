@@ -30,18 +30,22 @@ def create_product_file( **options ):
     new_app_id = options.get('new_app_id')
     sites = options.get('sites')
     type = options.get('type')
+    plugin_name = options.get('plugin_name')
+
     current_version = options.get('version')
     print '%s-%s' % (current_version, type)
 
+    plugin_name = plugin_name if plugin_name else path.basename(dir_name)
+
     replace(plugin_config, current_app_id, new_app_id)
-    plugin_name = "%s_%s_%s_%s" % (path.basename(dir_name), current_version, sites, type)
+    plugin_name = "%s_%s_%s_%s" % (plugin_name, current_version, sites, type)
     shutil.make_archive('%s/%s/%s' % (type, sites, plugin_name), 'zip', path.dirname(dir_name), path.basename(dir_name))
 
 def load_json_by_url( url ):
     response = urllib.urlopen(url)
     return json.loads(response.read())
 
-def make_zip_sites( config_url, plugin_detail, project_dir ):
+def make_zip_sites( config_url, plugin_detail, project_dir, plugin_name ):
     config_obj = load_json_by_url( config_url )
     plugin_detail_obj = load_json_by_url( plugin_detail )
     version = plugin_detail_obj['version']
@@ -58,6 +62,7 @@ def make_zip_sites( config_url, plugin_detail, project_dir ):
             new_app_id = val['pid'],
             sites = val['slug'],
             version = version,
-            type = type
+            type = type,
+            plugin_name = plugin_name
         )
         current_pid = val['pid']
